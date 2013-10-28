@@ -60,7 +60,6 @@ $(function() {
 
   $('button#end-turn').click(function() {
     var playedCombination = turn.getPlayedCombination();
-    console.log(playedCombination);
     if (game.combinationHasBeenPlayed(playedCombination)) {
       alert("That combination has already been played in the game! You score 0 points.");
     } else {
