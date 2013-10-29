@@ -76,11 +76,9 @@ $(function() {
   }
 
   function displayPlayedCombinations() {
-    game.playedCombinations.forEach(function(combination) {
-      $('#display-played-combinations').append("<div class='dice'></div>");
-      combination.dice.forEach(function(dieValue) {
-        $('#display-played-combinations').children('.dice').last().append("<span class='die " + diceNames[dieValue] + "'></span>");
-      });
+    $('#display-played-combinations').append("<div class='dice'></div>");
+    game.playedCombinations[game.playedCombinations.length - 1].dice.forEach(function(dieValue) {
+      $('#display-played-combinations').children('.dice').last().append("<span class='die " + diceNames[dieValue] + "'></span>");
     });
   }
 
