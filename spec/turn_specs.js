@@ -1,54 +1,49 @@
 describe('Turn', function() {
-  it('is initialized with five dice', function() {
-    var turn = Object.create(Turn);
+  var turn;
+
+  beforeEach(function() {
+    turn = Object.create(Turn);
     turn.initialize();
+  });
+
+  it('is initialized with five dice', function() {
     turn.dice.length.should.equal(5);
   });
 
   it('starts with the dice rolled zero times', function() {
-    var turn = Object.create(Turn);
-    turn.initialize();
     turn.numberOfRolls.should.equal(0);
   });
 
   describe('rollDice', function() {
     it('rolls the dice', function() {
-      var turn = Object.create(Turn);
-      turn.initialize();
+      var spy = sinon.spy(Die, "roll");
       turn.rollDice();
-      turn.dice.forEach(function(die) {
-        die.value.should.exist;
-      });
+      spy.callCount.should.equal(5);
+      Die.roll.restore();
     });
   });
 
   it('adds one to the numberOfRolls each dice roll', function() {
-    var turn = Object.create(Turn);
-    turn.initialize();
     turn.rollDice();
     turn.numberOfRolls.should.equal(1);
   });
 
   describe('rerollDice', function() {
     it('rerolls the selected die', function() {
-      var turn = Object.create(Turn);
-      turn.initialize();
-      turn.rerollDice([0]);
-      turn.dice[0].value.should.exist;
+      var spy = sinon.spy(Die, "roll");
+      turn.rerollDice([turn.dice[0], turn.dice[3]]);
+      spy.callCount.should.equal(2);
+      Die.roll.restore();
     });
 
     it('adds one to the number of rolls', function() {
-      var turn = Object.create(Turn);
-      turn.initialize();
-      turn.rerollDice([0]);
+      turn.rerollDice([turn.dice[0]]);
       turn.numberOfRolls.should.equal(1);
     });
   });
 
   describe('end', function() {
     it('gets the score for the selected dice', function() {
-      var turn = Object.create(Turn);
-      turn.initialize();
       turn.dice.forEach(function(die) {
         die.value = 5;
       });

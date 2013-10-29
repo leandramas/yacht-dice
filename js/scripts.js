@@ -1,13 +1,69 @@
 $(function() {
   var game;
-  var die = Object.create(Die);
   var diceNames = {1: 'one', 2: 'two', 3: 'three', 4: 'four', 5: 'five', 6: 'six'};
   var turn;
   
-  function displayDice(turn) {
-    for (var i = 0; i < 5; i++) {
-      $('span#die' + i).removeClass().addClass('die ' + diceNames[turn.rolls[i]]).attr('value', i);
+  $('button#see-instructions').click(function() {
+    $(this).fadeOut();
+    $('div#instructions').toggle();
+  });
+
+  $('#hide-instructions').click(function() {
+    $('div#instructions').fadeOut();
+    $('button#see-instructions').fadeIn();
+  });
+
+  $('button#play').click(function() {
+    startGame();
+  });
+
+  $('button#roll-dice').click(function() {
+    turn = Object.create(Turn);
+    turn.initialize();
+    turn.rollDice();
+    displayDice(turn);
+    $(this).hide();
+    $("#reroll-dice").show();
+    $("#reroll-instructions").fadeIn();
+  });
+
+  $('button#reroll-dice').click(function() {
+    var diceToReroll = getSelectedDice();
+    turn.rerollDice(diceToReroll);
+    displayDice(turn);
+  });
+
+  $('button#end-turn').click(function() {
+    scoreTurn();   
+    if (turn.score > 0) {
+      game.currentPlayer.addPoints(turn.score);
+      game.addPlayedCombination(turn.playedCombination);
+      displayPlayedCombinations();
+      alert("You scored: " + turn.score);
+      displayScore(game.players);
+    } else {
+      alert("No points for you this round. Better luck next turn!");
     }
+    endTurn();
+  });
+
+  $('.die').click(function() {
+    $(this).toggleClass('selected');
+  });
+
+  function displayGame(game) {
+    $('button#play').hide();
+    $('button#see-instructions').hide();
+    $('div#lead-paragraph').hide();
+    $('div#instructions').fadeIn();
+    $('span#current-player-number').empty().append(game.currentPlayer.id);
+    $('#left-side-of-page').fadeIn();
+  }
+
+  function displayDice(turn) {
+    turn.dice.forEach(function(die, index) {
+      $('span#die' + index).removeClass().addClass('die ' + diceNames[die.value]).attr('value', index);
+    });
     $("#rerolls-remaining").empty().append(3 - turn.numberOfRolls);
     if (turn.numberOfRolls === 2) {
       $("#reroll-plural").empty();
@@ -17,6 +73,15 @@ $(function() {
     } else {
       $("#reroll-plural").empty().append("s");
     }
+  }
+
+  function displayPlayedCombinations() {
+    game.playedCombinations.forEach(function(combination) {
+      $('#display-played-combinations').append("<div class='dice'></div>");
+      combination.dice.forEach(function(dieValue) {
+        $('#display-played-combinations').children('.dice').last().append("<span class='die " + diceNames[dieValue] + "'></span>");
+      });
+    });
   }
 
   function displayScore(players) {
@@ -34,45 +99,38 @@ $(function() {
     });
   }
 
-
-  $('button#see-instructions').click(function() {
-    $(this).fadeOut();
-    $('div#instructions').toggle();
-  });
-
-  $('#hide-instructions').click(function() {
-    $('div#instructions').fadeOut();
-    $('button#see-instructions').fadeIn();
-  });
-
-  $('button#play').click(function() {
+  function startGame() {
     game = Object.create(Game);
     var numberOfPlayers = prompt('How many players?');
     game.createPlayers(numberOfPlayers);
+    game.initialize();
     displayScore(game.players);
-    $('button#play').hide();
-    $('button#see-instructions').hide();
-    $('div#lead-paragraph').hide();
-    $('div#instructions').fadeIn();
-    $('span#current-player-number').empty().append(game.currentPlayer.id);
-    $('#left-side-of-page').fadeIn();
-  });
+    displayGame(game);
+  }
 
-  $('button#end-turn').click(function() {
-    var playedCombination = turn.getPlayedCombination();
-    if (game.combinationHasBeenPlayed(playedCombination)) {
-      alert("That combination has already been played in the game! You score 0 points.");
+  function getSelectedDice() {
+    var selectedDice = [];
+    $('.selected').each(function() {
+      var dieIndex = $(this).attr('value');
+      selectedDice.push(turn.dice[dieIndex]);
+    });
+    return selectedDice;
+  }
+
+  function scoreTurn() {
+    var selectedDice = getSelectedDice();
+    if (game.combinationHasBeenPlayed(selectedDice)) {
+      alert('That combination has already been played this game. Please select a different combination.');
+      scoreTurn();
     } else {
-      var points = turn.evaluateRolls();
-      game.currentPlayer.addPoints(points);
-      game.addPlayedCombination(playedCombination);
-      alert("You scored: " + points);
-      displayScore(game.players);
-      game.turnsCompleted ++;
-      $("#reroll-instructions").hide();
-      $("#reroll-dice").hide();
-      console.log(game.playedCombinations);
+      turn.end(selectedDice);
     }
+  }
+
+  function endTurn() {
+    game.turnsCompleted ++;
+    $("#reroll-instructions").hide();
+    $("#reroll-dice").hide();
     if (game.isOver()) {
       game.determineWinner();
       if (game.winners.length > 1) {
@@ -90,30 +148,7 @@ $(function() {
         $('span#die' + i).removeClass().addClass('die void');
       }
     }
-  });
-
-  $('.die').click(function() {
-    $(this).toggleClass('selected');
-  });
-
-  $('button#roll-dice').click(function() {
-    turn = Object.create(Turn);
-    turn.rollDice(die);
-    displayDice(turn);
-    $(this).hide();
-    $("#reroll-dice").show();
-    $("#reroll-instructions").fadeIn();
-  });
-
-  $('button#reroll-dice').click(function() {
-    var diceToReroll = [];
-    $('.selected').each(function() {
-      var dieNumber = $(this).attr('value');
-      diceToReroll.push(dieNumber);
-    });
-    turn.rerollDice(die, diceToReroll);
-    displayDice(turn);
-  });
+  }
 });
 
 

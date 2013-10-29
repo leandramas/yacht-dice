@@ -15,20 +15,19 @@ var Turn = {
     this.numberOfRolls++;
   },
 
-  rerollDice: function(diceIndexes) {
-    var dice = this.dice;
-    diceIndexes.forEach(function(index) {
-      dice[index].roll();
+  rerollDice: function(dice) {
+    dice.forEach(function(die) {
+      die.roll();
     });
     this.numberOfRolls++;
   },
 
   end: function(selectedDice) {
-    var combination = Object.create(Combination);
+    this.playedCombination = Object.create(Combination);
     var diceValues = selectedDice.map(function(die) {
-      die.value;
+      return die.value;
     });
-    combination.addDice(diceValues);
-    this.score = combination.scoreDice();
+    this.playedCombination.addDice(diceValues);
+    this.score = this.playedCombination.scoreDice();
   }
 };
