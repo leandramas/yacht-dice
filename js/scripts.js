@@ -6,6 +6,7 @@ $(function() {
   $('.play').click(function() {
     $('.play').hide();
     startGame();
+    $('html, body').animate({scrollTop: $('#game').offset().top}, 2000);
   });
 
   $('button#roll-dice').click(function() {
