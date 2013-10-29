@@ -3,17 +3,8 @@ $(function() {
   var diceNames = {1: 'one', 2: 'two', 3: 'three', 4: 'four', 5: 'five', 6: 'six'};
   var turn;
   
-  $('button#see-instructions').click(function() {
-    $(this).fadeOut();
-    $('div#instructions').toggle();
-  });
-
-  $('#hide-instructions').click(function() {
-    $('div#instructions').fadeOut();
-    $('button#see-instructions').fadeIn();
-  });
-
-  $('button#play').click(function() {
+  $('.play').click(function() {
+    $('.play').hide();
     startGame();
   });
 
@@ -52,12 +43,8 @@ $(function() {
   });
 
   function displayGame(game) {
-    $('button#play').hide();
-    $('button#see-instructions').hide();
-    $('div#lead-paragraph').hide();
-    $('div#instructions').fadeIn();
     $('span#current-player-number').empty().append(game.currentPlayer.id);
-    $('#left-side-of-page').fadeIn();
+    $('#game').fadeIn();
   }
 
   function displayDice(turn) {
@@ -83,17 +70,19 @@ $(function() {
   }
 
   function displayScore(players) {
-    $('div#scoreboard-border').empty().append("<div id='scoreboard' class='small-" + players.length * 3 + " columns'></div>");
-    var columnsPerPlayer = 12 /players.length;
-    if (players.length > 4) {
-      columnsPerPlayer = 3;
-    }
+    $('div #scoreboard table tbody').empty();
     players.forEach(function(player) {
-      $('div#scoreboard').append(
-        '<div class="small-' + columnsPerPlayer + ' columns">' +
-          '<p>Player <span class="insert-player-id">' + player.id + '</span>: <span class="insert-player-score">' + player.score + '</span></p>' +
-        '</div>'
-      );
+      $('div#scoreboard table tbody').append("<tr>" + 
+                                                       "<td>" +
+                                                         "Player" + 
+                                                         "<span class='insert-player-id'>" + player.id + "</span>" +
+                                                       "</td>" + 
+                                                       "<td>" +
+                                                         "<span class='insert-player-score'>" + 
+                                                           player.score +
+                                                         "</span>" +
+                                                       "</td>" +
+                                                     "</tr>");
     });
   }
 
