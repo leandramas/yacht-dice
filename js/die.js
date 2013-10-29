@@ -1,6 +1,8 @@
 var Die = {
+  value: null,
+
   roll: function() {
-    return Math.floor(Math.random() * 6) + 1;
+    this.value = Math.floor(Math.random() * 6) + 1;
   }
 };
 

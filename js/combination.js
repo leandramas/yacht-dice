@@ -14,6 +14,7 @@ var Combination = {
     } else if (this.dice.length == 3) {
       this._scoreThreeDice();
     }
+    return this.score;
   },
 
   _scoreFiveDice: function() {

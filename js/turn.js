@@ -1,16 +1,34 @@
 var Turn = {
   numberOfRolls: 0,
 
-  rollDice: function(die) {
-    this.rolls = [die.roll(), die.roll(), die.roll(), die.roll(), die.roll()];
-    this.numberOfRolls = 1;
+  initialize: function() {
+    this.dice = [];
+    for (var i = 0; i < 5; i++) {
+      this.dice.push(Object.create(Die));
+    }
   },
 
-  rerollDice: function(die, diceToReroll) {
-    var diceRolls = this.rolls;
-    diceToReroll.forEach(function(dieIndex) {
-      diceRolls[dieIndex] = die.roll();
-    });  
-    this.numberOfRolls++; 
+  rollDice: function() {
+    this.dice.forEach(function(die) {
+      die.roll();
+    });
+    this.numberOfRolls++;
   },
+
+  rerollDice: function(diceIndexes) {
+    var dice = this.dice;
+    diceIndexes.forEach(function(index) {
+      dice[index].roll();
+    });
+    this.numberOfRolls++;
+  },
+
+  end: function(selectedDice) {
+    var combination = Object.create(Combination);
+    var diceValues = selectedDice.map(function(die) {
+      die.value;
+    });
+    combination.addDice(diceValues);
+    this.score = combination.scoreDice();
+  }
 };
