@@ -13,6 +13,14 @@
   text-align: center;
 }
 
+.play {
+  margin-top: 30px;
+}
+
+#image-button-combo {
+  margin-top: 60px;
+}
+
 .hiding {
   display: none;
 }

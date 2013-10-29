@@ -20,10 +20,10 @@
     	<div class='row'>
     		<h1 class='center-text'>Yacht Dice</h1>
     	</div>
-    	<div id="lead-paragraph" class='row'>
-    		<div class='large-10 small-10 small-offset-1 columns'>
-    			<p>This page let's you play Yacht Dice. It's similar to Yachtzee. Click see instructions to learn how to play. When you are ready to start the game, click play.</p>
-    		</div>
+      <div class='row'>
+        <div class='small-8 small-centered columns'>
+          <image src="img/dice.png"></image>
+        </div>
       </div>
       <div class='row'>
         <div class='center-text'>
@@ -36,22 +36,34 @@
         <h1 class='text-center'>How to Play</h1>
       </div>
       <div class='row'>
+        <h4>About</h4>
         <p>Yacht is a dice game, similar to the popular game Yahtzee. Each player rolls five dice at a time and tries to score as many points as possible. A player can choose to reroll any of their dice up to two times.</p>
-        <h4>Scoring</h4>
-        <p>Players can score points with one of the following dice combinations:</p>
-          <ul class='small-offset-1 columns'>
-            <li>Yacht (five of a kind), worth 50 points.</li>
-            <li>Full house (three of a kind and a pair), worth 25 points.</li>
-            <li>Straight (five sequential dice), worth 40 points.</li>
-            <li>Four of a kind, worth the sum of the four dice.</li>
-            <li>Small straight (four sequential dice), worth 30 points.</li>
-            <li>Three of a kind, worth the sum of the three dice.</li>
-            <li>Any other combination is worth zero.</li>
-          </ul>
-        <p>A combination may only be played once during the entire game.</p>
         <h4>How to Win</h4>
-        <p>The winner of the game is the player who has the most points after 13 turns</p>
-        <button class='button success play'>Let's Play!</button>
+        <p>The winner of the game is the player who has the most points after 13 turns.</p>
+        <div class='row'>
+          <div class='small-8 large-6 columns'>
+            <h4>Scoring</h4>
+            <p>Players can score points with one of the following dice combinations:</p>
+              <ul class='small-offset-1 columns'>
+                <li>Yacht (five of a kind), worth 50 points.</li>
+                <li>Full house (three of a kind and a pair), worth 25 points.</li>
+                <li>Straight (five sequential dice), worth 40 points.</li>
+                <li>Four of a kind, worth the sum of the four dice.</li>
+                <li>Small straight (four sequential dice), worth 30 points.</li>
+                <li>Three of a kind, worth the sum of the three dice.</li>
+                <li>Any other combination is worth zero.</li>
+              </ul>
+            <p>A combination may only be played once during the entire game.</p>
+          </div>
+          <div id='image-button-combo' class='small-4 large-6 columns'>
+            <div class='small-6 small-centered columns'>
+              <image src='img/die-red.png'></image>
+            </div>
+            <div class='text-center'>
+              <button class='button button-large success play'>Let's Play!</button>
+            </div>
+          </div>
+        </div>
       </div>
     </section>
     <section id='game' class='hiding'>
@@ -59,7 +71,7 @@
         <h1 class='text-center'>Let's Play!</h1>
       </div>
       <div class='row'>
-        <div class='small-8 large-9 columns'>
+        <div class='small-6 large-6 columns'>
           <div class='row'>
             <h4 class="player-information">
               Player <span id="current-player-number"></span>, it's your turn!
@@ -67,7 +79,10 @@
           </div>
           <div class="row">
             <div class="board">
-              <p id="reroll-instructions" class="hiding">Select dice to re-roll. You can reroll the dice <span id="rerolls-remaining"></span> more time<span id="reroll-plural">s</span>.</p>
+              <p id="reroll-instructions" class="hiding">You can reroll the dice <span id="rerolls-remaining"></span> more time<span id="reroll-plural">s</span>. Just click on the dice you would like to roll again to select.</p>
+              <p id='end-turn-instructions'>
+                To end your turn select the dice you would like to play and then click 'End Turn'</p>
+              </p>
               <div class="dice">
                 <span id="die0" class="die void"></span>
                 <span id="die1" class="die void"></span>
@@ -81,27 +96,33 @@
             </div> 
           </div>
         </div>
-        <div id='scoreboard' class='small-4 large-offset-1 large-2 columns'>
+        <div class='small-6 large-1-offset large-5 columns'>
           <h4 class='text-center'>
             Round <span id="current-turn">1</span>
           </h4>
-          <table>
-            <thead>
-              <tr>
-                <th>Name</th>
-                <th>Score</th>
-              </tr>
-            </thead>
-            <tbody>
-            </tbody>
-          </table>
-        </div>
-      </div>
-      <div class='row'>
-        <div class='small-12 columns'>
-          <div id="display-played-combinations">
-            <h4>Played Combinations</h4>
-            <p>These cannot be played again this game</p>
+          <div class='row'>
+            <div class='section-container accordion' data-section>
+              <div id='scoreboard' class='section'>
+                <h4 class='title text-center' data-section-title>Score</h4>
+                <div class='content' data-section-content>
+                  <table id='scores' class='center-table'>
+                    <thead>
+                      <tr>
+                        <th>Name</th>
+                        <th>Score</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+              <div id="display-played-combinations" class='section'>
+                <h4 class='title text-center' data-section-title>Played Combinations</h4>
+                <div class='content'data-section-content>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>

@@ -63,16 +63,16 @@ $(function() {
   }
 
   function displayPlayedCombinations() {
-    $('#display-played-combinations').append("<div class='dice'></div>");
+    $('#display-played-combinations').children('.content').first().append("<div class='dice'></div>");
     game.playedCombinations[game.playedCombinations.length - 1].dice.forEach(function(dieValue) {
-      $('#display-played-combinations').children('.dice').last().append("<span class='die " + diceNames[dieValue] + "'></span>");
+      $('#display-played-combinations').children('.content').first().children('.dice').last().append("<span class='die " + diceNames[dieValue] + "'></span>");
     });
   }
 
   function displayScore(players) {
-    $('div #scoreboard table tbody').empty();
+    $('table#scores tbody').empty();
     players.forEach(function(player) {
-      $('div#scoreboard table tbody').append("<tr>" + 
+      $('table#scores tbody').append("<tr>" + 
                                                        "<td>" +
                                                          "Player" + 
                                                          "<span class='insert-player-id'>" + player.id + "</span>" +
