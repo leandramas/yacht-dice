@@ -134,7 +134,7 @@ $(function() {
     if (game.combinationHasBeenPlayed(selectedDice)) {
       alert('That combination has already been played this game. Please select a different combination.');
     } else {
-      game.turn.score(selectedDice);
+      game.turn.scoreDice(selectedDice);
       alert('That combination is worth ' + game.turn.score + ' points.');
     }
   }

@@ -22,7 +22,7 @@ var Turn = {
     this.numberOfRolls++;
   },
 
-  score: function(selectedDice) {
+  scoreDice: function(selectedDice) {
     this.playedCombination = Object.create(Combination);
     var diceValues = selectedDice.map(function(die) {
       return die.value;

@@ -42,12 +42,12 @@ describe('Turn', function() {
     });
   });
 
-  describe('score', function() {
+  describe('scoreDice', function() {
     it('gets the score for the selected dice', function() {
       turn.dice.forEach(function(die) {
         die.value = 5;
       });
-      turn.score(turn.dice);
+      turn.scoreDice(turn.dice);
       turn.score.should.equal(50);
     });
   });
