@@ -47,7 +47,7 @@ describe('Turn', function() {
       turn.dice.forEach(function(die) {
         die.value = 5;
       });
-      turn.end(turn.dice);
+      turn.score(turn.dice);
       turn.score.should.equal(50);
     });
   });

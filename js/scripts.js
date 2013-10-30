@@ -22,7 +22,7 @@ $(function() {
   $('button#reroll-dice').click(function() {
     var diceToReroll = getSelectedDice();
     game.turn.rerollDice(diceToReroll);
-    displayDice(turn);
+    displayDice(game.turn);
   });
 
   $('button#score-dice').click(function() {
@@ -32,11 +32,7 @@ $(function() {
   $('button#end-turn').click(function() {
     if (confirmTurnEnd()) {
       scoreTurn();   
-      if (turn.score > 0) {
-        updateScore();
-      } else {
-        alert("No points for you this round. Better luck next turn!");
-      }
+      updateScore();
       endTurn();
     }
   });
@@ -126,8 +122,6 @@ $(function() {
     var selectedDice = getSelectedDice();
     if (game.combinationHasBeenPlayed(selectedDice)) {
       alert('That combination has already been played this game. Please select a different combination.');
-    } else if (selectedDice.length === 0) {
-      alert('Please select at least one die.');
     } else {
       game.turn.score(selectedDice);
       alert('That combination is worth ' + game.turn.score + ' points.');
@@ -165,11 +159,13 @@ $(function() {
 
 
   function updateScore() {
-    game.currentPlayer.addPoints(turn.score);
-    game.addPlayedCombination(turn.playedCombination);
-    displayPlayedCombinations();
-    alert("You scored: " + turn.score);
-    displayScore(game.players);
+    if (game.turn.score > 0) {
+      game.currentPlayer.addPoints(game.turn.score);
+      game.addPlayedCombination(game.turn.playedCombination);
+      displayPlayedCombinations(); 
+      displayScore(game.players);
+    }
+    alert("You scored: " + game.turn.score);
   }
 });
 
