@@ -36,10 +36,14 @@ var Game = {
   },
 
   getWinners: function() {
-    var highScore = this._highScore();
-    return this.players.filter(function(player)  {
-      return player.score === highScore;
-    });
+    if (this.players.length < 2) {
+      return this.players;
+    } else {
+      var highScore = this._highScore();
+      return this.players.filter(function(player)  {
+        return player.score === highScore;
+      });
+    }
   },
 
   isOver: function() {

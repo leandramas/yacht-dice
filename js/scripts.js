@@ -141,6 +141,7 @@ $(function() {
       endGame();
     } else {
       game.nextPlayer();
+      game.newTurn();
       $('span#current-player-number').text(game.currentPlayer.id);
       $("span#player-message").text("it's your turn!");
       $("#start-turn-instructions").show();
@@ -162,6 +163,7 @@ $(function() {
     }
     $('.play').text('Play Again').show();
     $('.board').hide();
+    $('.player-information').hide();
   }
 
   function updateScore() {

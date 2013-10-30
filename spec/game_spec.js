@@ -41,6 +41,11 @@ describe('Game', function() {
       game.createPlayers(2);
       game.getWinners().should.eql(game.players);
     });
+
+    it('gets the player if there is only one player', function() {
+      game.createPlayers(1);
+      game.getWinners().should.eql(game.players);
+    });
   });
  
   it('is not over if each player has played less than 13 turns', function() {
