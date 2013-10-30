@@ -103,12 +103,21 @@ $(function() {
   function startGame() {
     $('.play').hide();
     game = Object.create(Game);
-    var numberOfPlayers = prompt('How many players?');
-    game.createPlayers(numberOfPlayers);
+    setPlayers();
     game.initialize();
     displayScore(game.players);
     displayGame(game);
     $('html, body').animate({scrollTop: $('#game').offset().top}, 2000);
+  }
+
+  function setPlayers() {
+    var numberOfPlayers = prompt('How many players?');
+    if (isNaN(numberOfPlayers) || numberOfPlayers > 5 || numberOfPlayers < 1) {
+      alert('This game is for 1 - 5 players. Please enter a valid number of players.');
+      setPlayers();
+    } else {
+      game.createPlayers(numberOfPlayers);
+    } 
   }
 
   function getSelectedDice() {
