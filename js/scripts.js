@@ -1,43 +1,58 @@
 $(function() {
   var game;
   var diceNames = {1: 'one', 2: 'two', 3: 'three', 4: 'four', 5: 'five', 6: 'six'};
-  var turn;
   
-  $('.play').click(function() {
-    $('.play').hide();
+  $('.play').click(function() {    
     startGame();
-    $('html, body').animate({scrollTop: $('#game').offset().top}, 2000);
   });
 
   $('button#roll-dice').click(function() {
-    turn = Object.create(Turn);
-    turn.initialize();
-    turn.rollDice();
-    displayDice(turn);
+    game.turn.rollDice();
+    displayDice(game.turn);
     $(this).hide();
+    $('#start-turn-instructions').hide();
     $("#reroll-dice").show();
     $("#reroll-instructions").fadeIn();
+    $("#score-dice-instructions").fadeIn();
+    $("#score-dice").show();
+    $('#end-turn').show();
+    $('#player-message').empty().append('select dice to reroll.');
   });
 
   $('button#reroll-dice').click(function() {
     var diceToReroll = getSelectedDice();
-    turn.rerollDice(diceToReroll);
+    game.turn.rerollDice(diceToReroll);
     displayDice(turn);
   });
 
-  $('button#end-turn').click(function() {
-    scoreTurn();   
-    if (turn.score > 0) {
-      game.currentPlayer.addPoints(turn.score);
-      game.addPlayedCombination(turn.playedCombination);
-      displayPlayedCombinations();
-      alert("You scored: " + turn.score);
-      displayScore(game.players);
-    } else {
-      alert("No points for you this round. Better luck next turn!");
-    }
-    endTurn();
+  $('button#score-dice').click(function() {
+    scoreTurn();
   });
+
+  $('button#end-turn').click(function() {
+    if (confirmTurnEnd()) {
+      scoreTurn();   
+      if (turn.score > 0) {
+        updateScore();
+      } else {
+        alert("No points for you this round. Better luck next turn!");
+      }
+      endTurn();
+    }
+  });
+
+  function confirmTurnEnd() {
+    var confirmation = true;
+    if (game.turn.numberOfRolls < 3) {
+      confirmation = confirm('You still can still reroll the dice. Are you sure you want to end your turn?');
+    }
+
+    if (confirmation && getSelectedDice().length === 0) {
+      confirmation = confirm('You have not selected any dice. Are you sure you want to continue with ending your turn?');
+    }
+
+    return confirmation;
+  }
 
   $('.die').click(function() {
     $(this).toggleClass('selected');
@@ -88,19 +103,21 @@ $(function() {
   }
 
   function startGame() {
+    $('.play').hide();
     game = Object.create(Game);
     var numberOfPlayers = prompt('How many players?');
     game.createPlayers(numberOfPlayers);
     game.initialize();
     displayScore(game.players);
     displayGame(game);
+    $('html, body').animate({scrollTop: $('#game').offset().top}, 2000);
   }
 
   function getSelectedDice() {
     var selectedDice = [];
     $('.selected').each(function() {
       var dieIndex = $(this).attr('value');
-      selectedDice.push(turn.dice[dieIndex]);
+      selectedDice.push(game.turn.dice[dieIndex]);
     });
     return selectedDice;
   }
@@ -109,9 +126,11 @@ $(function() {
     var selectedDice = getSelectedDice();
     if (game.combinationHasBeenPlayed(selectedDice)) {
       alert('That combination has already been played this game. Please select a different combination.');
-      scoreTurn();
+    } else if (selectedDice.length === 0) {
+      alert('Please select at least one die.');
     } else {
-      turn.end(selectedDice);
+      game.turn.score(selectedDice);
+      alert('That combination is worth ' + game.turn.score + ' points.');
     }
   }
 
@@ -133,14 +152,24 @@ $(function() {
   }
 
   function endGame() {
-    game.determineWinner();
-    if (game.winners.length > 1) {
+    var winners = game.getWinners();
+    console.log(winners);
+    if (winners.length > 1) {
       $('#winner-info').empty().append("It's a tie!").fadeIn();
     } else {
-      $('#winner-info').empty().append("Player " + game.winners[0].id + " won!").fadeIn();
+      $('#winner-info').empty().append("Player " + winners[0].id + " won!").fadeIn();
     }
     $('.play').empty().append('Play Again').show();
     $('.board').hide();
+  }
+
+
+  function updateScore() {
+    game.currentPlayer.addPoints(turn.score);
+    game.addPlayedCombination(turn.playedCombination);
+    displayPlayedCombinations();
+    alert("You scored: " + turn.score);
+    displayScore(game.players);
   }
 });
 

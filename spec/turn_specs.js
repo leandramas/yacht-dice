@@ -42,7 +42,7 @@ describe('Turn', function() {
     });
   });
 
-  describe('end', function() {
+  describe('score', function() {
     it('gets the score for the selected dice', function() {
       turn.dice.forEach(function(die) {
         die.value = 5;

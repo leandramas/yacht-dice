@@ -14,6 +14,10 @@ describe('Game', function() {
     it("it starts the game with no played combinations", function() {
       game.playedCombinations.should.eql([]);
     });
+
+    it("starts the game with a current turn", function() {
+      game.turn.should.be.ok;
+    });
   });
 
   it('has players', function() {
@@ -26,13 +30,19 @@ describe('Game', function() {
     game.currentPlayer.id.should.equal(1);
   });
 
-  it('has a winner', function() {
-    game.createPlayers(2);
-    game.players[0].addPoints(50);
-    game.determineWinner();
-    game.winners.should.eql([game.players[0]]);
-  });
+  describe('getWinners', function() {
+    it('gets the player with the higest score', function() {
+      game.createPlayers(2);
+      game.players[0].addPoints(50);
+      game.getWinners().should.eql([game.players[0]]);
+    });
 
+    it('gets all players with the high score if there is a tie', function() {
+      game.createPlayers(2);
+      game.getWinners().should.eql(game.players);
+    });
+  });
+ 
   it('is not over if each player has played less than 13 turns', function() {
     game.createPlayers(2);
     game.isOver().should.be.false;
@@ -68,6 +78,15 @@ describe('Game', function() {
 
     it('returns false if the combination has not been played', function() {
       game.combinationHasBeenPlayed([1, 1, 1]).should.be.false;
+    });
+  });
+
+  describe("newTurn", function() {
+    it('creates a new turn', function() {
+      game.turn.rollDice();
+      var oldTurn = game.turn;
+      game.newTurn();
+      game.turn.should.not.equal(oldTurn);
     });
   });
 });

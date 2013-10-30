@@ -4,6 +4,7 @@ var Game = {
 
   initialize: function() {
     this.playedCombinations = [];
+    this.newTurn();
   },
 
   addPlayedCombination: function(playedCombination) {
@@ -34,20 +35,29 @@ var Game = {
     }
   },
 
-  determineWinner: function() {
-    var highScore = this.players.reduce(function(previousPlayer, player) {
+  getWinners: function() {
+    var highScore = this._highScore();
+    return this.players.filter(function(player)  {
+      return player.score === highScore;
+    });
+  },
+
+  _highScore: function() {
+    return this.players.reduce(function(previousPlayer, player) {
       if (player.score > previousPlayer.score) {
         return player.score;
       } else {
         return previousPlayer.score;
       }
     });
-    this.winners = this.players.filter(function(player)  {
-      return player.score === highScore;
-    });
   },
 
   isOver: function() {
     return this.turnsCompleted === this.players.length * 13;
+  },
+
+  newTurn: function() {
+    this.turn = Object.create(Turn);
+    this.turn.initialize();
   }
 };

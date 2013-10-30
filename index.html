@@ -71,19 +71,21 @@
         <h1 class='text-center'>Let's Play!</h1>
       </div>
       <div id='winner' class='row'>
-        <h3><span id='winner-info hiding'></span></h3>
+        <h3><span id='winner-info' class='hiding'></span></h3>
       </div>
       <div class='row'>
         <div class='small-6 large-6 columns'>
           <div class='row'>
             <h4 class="player-information">
-              Player <span id="current-player-number"></span>, it's your turn!
+              Player <span id="current-player-number"></span>, <span id='player-message'>it's your turn!</span>
             </h4>
           </div>
           <div class="row">
             <div class="board">
-              <p id="reroll-instructions" class="hiding">You can reroll the dice <span id="rerolls-remaining"></span> more time<span id="reroll-plural">s</span>. Just click on the dice you would like to roll again to select.</p>
-              <p id='end-turn-instructions'>
+              <p id='start-turn-instructions'>Click roll to begin your turn!</p>
+              <p id="reroll-instructions" class="hiding">You can re-roll the dice <span id="rerolls-remaining"></span> more time<span id="reroll-plural">s</span>. Just click on the dice you would like to roll again. When you have made all your selections hit reroll.</p>
+              <p id='score-dice-instructions' class='hiding'>You can see what the value of a dice combination is worth at any time by selecting the dice and then pressing 'Score Dice'</p>
+              <p id='end-turn-instructions' class='hiding'>
                 To end your turn select the dice you would like to play and then click 'End Turn'</p>
               </p>
               <div class="dice">
@@ -95,7 +97,8 @@
               </div>
               <button id="roll-dice">Roll</button>
               <button id="reroll-dice" class="hiding">Re-roll</button>
-              <button id="end-turn">End Turn</button>
+              <button id='score-dice' class='hiding'>Score Dice</button>
+              <button id="end-turn" class='hiding alert'>End Turn</button>
             </div> 
           </div>
         </div>
