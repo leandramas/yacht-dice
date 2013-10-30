@@ -42,6 +42,15 @@ var Game = {
     });
   },
 
+  isOver: function() {
+    return this.turnsCompleted === this.players.length * 13;
+  },
+
+  newTurn: function() {
+    this.turn = Object.create(Turn);
+    this.turn.initialize();
+  },
+
   _highScore: function() {
     return this.players.reduce(function(previousPlayer, player) {
       if (player.score > previousPlayer.score) {
@@ -50,14 +59,5 @@ var Game = {
         return previousPlayer.score;
       }
     });
-  },
-
-  isOver: function() {
-    return this.turnsCompleted === this.players.length * 13;
-  },
-
-  newTurn: function() {
-    this.turn = Object.create(Turn);
-    this.turn.initialize();
   }
 };

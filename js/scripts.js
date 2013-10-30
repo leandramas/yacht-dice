@@ -1,4 +1,6 @@
 $(function() {
+  $(document).foundation();
+
   var game;
   var diceNames = {1: 'one', 2: 'two', 3: 'three', 4: 'four', 5: 'five', 6: 'six'};
   
@@ -16,7 +18,7 @@ $(function() {
     $("#score-dice-instructions").fadeIn();
     $("#score-dice").show();
     $('#end-turn').show();
-    $('#player-message').empty().append('select dice to reroll.');
+    $('#player-message').text('select dice to reroll.');
   });
 
   $('button#reroll-dice').click(function() {
@@ -55,7 +57,7 @@ $(function() {
   });
 
   function displayGame(game) {
-    $('span#current-player-number').empty().append(game.currentPlayer.id);
+    $('span#current-player-number').text(game.currentPlayer.id);
     $('#game').fadeIn();
   }
 
@@ -63,19 +65,19 @@ $(function() {
     turn.dice.forEach(function(die, index) {
       $('span#die' + index).removeClass().addClass('die ' + diceNames[die.value]).attr('value', index);
     });
-    $("#rerolls-remaining").empty().append(3 - turn.numberOfRolls);
+    $("#rerolls-remaining").text(3 - turn.numberOfRolls);
     if (turn.numberOfRolls === 2) {
       $("#reroll-plural").empty();
     } else if (turn.numberOfRolls === 3) {
       $("#reroll-dice").hide();
-      $("#reroll-plural").empty().append("s");
+      $("#reroll-plural").text("s");
     } else {
-      $("#reroll-plural").empty().append("s");
+      $("#reroll-plural").text("s");
     }
   }
 
   function displayPlayedCombinations() {
-    $('#display-played-combinations').children('.content').first().append("<div class='dice'></div>");
+    $('#display-played-combinations').children('.content').append("<div class='dice'></div>");
     game.playedCombinations[game.playedCombinations.length - 1].dice.forEach(function(dieValue) {
       $('#display-played-combinations').children('.content').first().children('.dice').last().append("<span class='die " + diceNames[dieValue] + "'></span>");
     });
@@ -85,16 +87,16 @@ $(function() {
     $('table#scores tbody').empty();
     players.forEach(function(player) {
       $('table#scores tbody').append("<tr>" + 
-                                                       "<td>" +
-                                                         "Player" + 
-                                                         "<span class='insert-player-id'>" + player.id + "</span>" +
-                                                       "</td>" + 
-                                                       "<td>" +
-                                                         "<span class='insert-player-score'>" + 
-                                                           player.score +
-                                                         "</span>" +
-                                                       "</td>" +
-                                                     "</tr>");
+                                       "<td>" +
+                                         "Player" + 
+                                         "<span class='insert-player-id'>" + player.id + "</span>" +
+                                       "</td>" + 
+                                       "<td>" +
+                                         "<span class='insert-player-score'>" + 
+                                           player.score +
+                                         "</span>" +
+                                       "</td>" +
+                                     "</tr>");
     });
   }
 
@@ -139,10 +141,10 @@ $(function() {
       endGame();
     } else {
       game.nextPlayer();
-      $('span#current-player-number').empty().append(game.currentPlayer.id);
-      $("span#player-message").empty().append("it's your turn!");
+      $('span#current-player-number').text(game.currentPlayer.id);
+      $("span#player-message").text("it's your turn!");
       $("#start-turn-instructions").show();
-      $('#current-turn').empty().append(Math.floor(game.turnsCompleted/game.players.length + 1));
+      $('#current-turn').text(Math.floor(game.turnsCompleted/game.players.length + 1));
       $('button#roll-dice').show();
       for (var i = 0; i < 5; i++) {
         $('span#die' + i).removeClass().addClass('die void');
@@ -154,14 +156,13 @@ $(function() {
     var winners = game.getWinners();
     console.log(winners);
     if (winners.length > 1) {
-      $('#winner-info').empty().append("It's a tie!").fadeIn();
+      $('#winner-info').text("It's a tie!").fadeIn();
     } else {
-      $('#winner-info').empty().append("Player " + winners[0].id + " won!").fadeIn();
+      $('#winner-info').text("Player " + winners[0].id + " won!").fadeIn();
     }
-    $('.play').empty().append('Play Again').show();
+    $('.play').text('Play Again').show();
     $('.board').hide();
   }
-
 
   function updateScore() {
     if (game.turn.score > 0) {
@@ -172,21 +173,3 @@ $(function() {
     }
   }
 });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
