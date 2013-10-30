@@ -132,11 +132,16 @@ $(function() {
     game.turnsCompleted ++;
     $("#reroll-instructions").hide();
     $("#reroll-dice").hide();
+    $("#score-dice-instructions").hide();
+    $("#score-dice").hide();
+    $("#end-turn").hide();
     if (game.isOver()) {
       endGame();
     } else {
       game.nextPlayer();
       $('span#current-player-number').empty().append(game.currentPlayer.id);
+      $("span#player-message").empty().append("it's your turn!");
+      $("#start-turn-instructions").show();
       $('#current-turn').empty().append(Math.floor(game.turnsCompleted/game.players.length + 1));
       $('button#roll-dice').show();
       for (var i = 0; i < 5; i++) {
@@ -165,7 +170,6 @@ $(function() {
       displayPlayedCombinations(); 
       displayScore(game.players);
     }
-    alert("You scored: " + game.turn.score);
   }
 });
 
