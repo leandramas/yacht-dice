@@ -120,13 +120,7 @@ $(function() {
     $("#reroll-instructions").hide();
     $("#reroll-dice").hide();
     if (game.isOver()) {
-      game.determineWinner();
-      if (game.winners.length > 1) {
-        alert("It's a tie!");
-      } else {
-        alert("Player " + game.winners[0].id + " won!");
-      }
-      $('button#play').empty().append('Play Again').show();
+      endGame();
     } else {
       game.nextPlayer();
       $('span#current-player-number').empty().append(game.currentPlayer.id);
@@ -136,6 +130,17 @@ $(function() {
         $('span#die' + i).removeClass().addClass('die void');
       }
     }
+  }
+
+  function endGame() {
+    game.determineWinner();
+    if (game.winners.length > 1) {
+      $('#winner-info').empty().append("It's a tie!").fadeIn();
+    } else {
+      $('#winner-info').empty().append("Player " + game.winners[0].id + " won!").fadeIn();
+    }
+    $('.play').empty().append('Play Again').show();
+    $('.board').hide();
   }
 });
 
